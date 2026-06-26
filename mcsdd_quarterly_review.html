@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MCSDD Quarterly Program Review</title>
+<style>
+  :root {
+    --bg: #f0f2f5;
+    --surface: #ffffff;
+    --surface2: #f7f8fa;
+    --border: #d8dde6;
+    --border-light: #eaecf0;
+    --primary: #1e3a6e;
+    --primary-light: #e8eef8;
+    --accent: #00796b;
+    --accent-light: #e0f2f1;
+    --warn: #b45309;
+    --warn-bg: #fffbeb;
+    --warn-border: #fbbf24;
+    --danger: #9b1c1c;
+    --danger-bg: #fef2f2;
+    --text: #1a202c;
+    --text2: #4a5568;
+    --text3: #718096;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ── Header ── */
+  .app-header {
+    background: var(--primary);
+    color: #fff;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid #0f2554;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .header-logo {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -0.5px;
+  }
+  .header-title { font-size: 15px; font-weight: 600; }
+  .header-sub { font-size: 11px; opacity: 0.7; margin-top: 1px; letter-spacing: 0.4px; }
+  .header-badge {
+    font-size: 10px; font-weight: 600; padding: 3px 8px;
+    background: rgba(255,255,255,0.15); border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.25); letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* ── HIPAA notice ── */
+  .hipaa-bar {
+    background: var(--warn-bg);
+    border-bottom: 1px solid var(--warn-border);
+    padding: 8px 24px;
+    font-size: 11px;
+    color: var(--warn);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hipaa-bar svg { flex-shrink: 0; }
+
+  /* ── Main layout ── */
+  .main { max-width: 900px; margin: 0 auto; padding: 20px 16px 40px; }
+
+  /* ── Section cards ── */
+  .section-card {
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--border-light);
+    background: var(--surface2);
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title { font-size: 13px; font-weight: 600; color: var(--primary); flex: 1; }
+  .section-toggle { font-size: 11px; color: var(--text3); }
+  .section-body { padding: 18px; }
+  .section-body.collapsed { display: none; }
+
+  /* ── Review info row ── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    padding: 16px;
+    background: var(--primary-light);
+    border-bottom: 1px solid var(--border-light);
+  }
+  .info-field label {
+    display: block; font-size: 10px; font-weight: 600; color: var(--primary);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+  }
+  .info-field input, .info-field select {
+    width: 100%; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 6px 10px;
+    font-size: 13px; background: #fff; color: var(--text);
+  }
+
+  /* ── Form elements ── */
+  label.field-label {
+    display: block; font-size: 11px; font-weight: 600;
+    color: var(--text2); margin-bottom: 4px; text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  input[type="text"], input[type="date"], select, textarea {
+    width: 100%; border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 8px 10px;
+    font-size: 13px; font-family: inherit; background: #fff; color: var(--text);
+    transition: border-color 0.15s;
+  }
+  input[type="text"]:focus, textarea:focus, select:focus {
+    outline: none; border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(30,58,110,0.1);
+  }
+  textarea { resize: vertical; min-height: 72px; }
+
+  .field-row { margin-bottom: 14px; }
+  .field-row:last-child { margin-bottom: 0; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+  /* ── Checklist ── */
+  .checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .check-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .check-item input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--primary); flex-shrink: 0; }
+
+  /* ── Service / Outcome repeater ── */
+  .repeater-item {
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 10px;
+    background: var(--surface2);
+    position: relative;
+  }
+  .repeater-item-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  }
+  .item-badge {
+    font-size: 10px; font-weight: 700; padding: 2px 8px;
+    border-radius: 20px; text-transform: uppercase; letter-spacing: 0.4px;
+    background: var(--primary-light); color: var(--primary);
+  }
+  .remove-btn {
+    margin-left: auto; font-size: 11px; color: var(--danger);
+    border: none; background: none; cursor: pointer; padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .remove-btn:hover { background: var(--danger-bg); }
+
+  .add-btn {
+    width: 100%; padding: 9px; border: 1px dashed var(--border);
+    border-radius: var(--radius); background: none; color: var(--text3);
+    font-size: 12px; cursor: pointer; transition: all 0.15s;
+  }
+  .add-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+
+  /* ── Radio groups ── */
+  .radio-group { display: flex; gap: 16px; flex-wrap: wrap; }
+  .radio-group label { display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; }
+  .radio-group input[type="radio"] { accent-color: var(--primary); }
+
+  /* ── Status selector ── */
+  .status-select select {
+    background: var(--surface2);
+    font-weight: 500;
+  }
+
+  /* ── AI Section ── */
+  .ai-section {
+    background: linear-gradient(135deg, #0d1b3e 0%, #1e3a6e 100%);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 16px;
+    color: #fff;
+  }
+  .ai-section h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .ai-section p { font-size: 12px; opacity: 0.75; margin-bottom: 16px; }
+  .ai-controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .ai-btn {
+    padding: 9px 18px; border-radius: var(--radius);
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.1);
+    color: #fff; font-size: 12px; font-weight: 500; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ai-btn:hover { background: rgba(255,255,255,0.2); }
+  .ai-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .ai-btn.primary {
+    background: var(--accent); border-color: var(--accent);
+  }
+  .ai-btn.primary:hover { background: #00695c; }
+
+  .output-box {
+    background: #fff; color: var(--text);
+    border-radius: var(--radius); padding: 14px;
+    min-height: 80px; font-size: 13px; line-height: 1.7;
+    white-space: pre-wrap; border: 1px solid rgba(255,255,255,0.15);
+    display: none;
+    position: relative;
+  }
+  .output-box.visible { display: block; }
+  .output-loading { display: flex; align-items: center; gap: 8px; opacity: 0.6; font-size: 12px; }
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid var(--border); border-top-color: var(--primary);
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .copy-btn {
+    position: absolute; top: 10px; right: 10px;
+    font-size: 11px; padding: 4px 10px; border-radius: 5px;
+    border: 1px solid var(--border); background: var(--surface2);
+    cursor: pointer; color: var(--text2);
+  }
+  .copy-btn:hover { background: var(--primary-light); color: var(--primary); }
+
+  /* ── Conclusions ── */
+  .action-item {
+    display: flex; gap: 8px; align-items: flex-start; margin-bottom: 8px;
+  }
+  .action-item input[type="text"] { flex: 1; }
+  .action-item .remove-btn { padding: 6px 8px; }
+
+  /* ── Footer actions ── */
+  .footer-bar {
+    background: var(--surface); border-top: 1px solid var(--border-light);
+    padding: 14px 24px;
+    display: flex; gap: 10px; justify-content: flex-end;
+    position: sticky; bottom: 0; z-index: 100;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+  }
+  .btn {
+    padding: 9px 20px; border-radius: var(--radius);
+    border: 1px solid var(--border); background: #fff;
+    color: var(--text); font-size: 13px; font-weight: 500; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--surface2); }
+  .btn.primary-btn {
+    background: var(--primary); color: #fff; border-color: var(--primary);
+  }
+  .btn.primary-btn:hover { background: #162f5c; }
+  .btn.accent-btn {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .btn.accent-btn:hover { background: #00695c; }
+
+  /* ── Divider label ── */
+  .divider-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.6px; color: var(--text3); margin-bottom: 12px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--border-light);
+  }
+
+  /* ── Print ── */
+  @media print {
+    .app-header, .hipaa-bar, .footer-bar, .ai-controls, .add-btn,
+    .remove-btn, .section-toggle, .copy-btn { display: none !important; }
+    body { background: #fff; }
+    .main { max-width: 100%; padding: 0; }
+    .section-body.collapsed { display: block !important; }
+    .section-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+    .ai-section { background: #1e3a6e !important; -webkit-print-color-adjust: exact; }
+    .output-box { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── App Header ── -->
+<header class="app-header">
+  <div class="header-left">
+    <div class="header-logo">MC</div>
+    <div>
+      <div class="header-title">MCSDD Quarterly Program Review</div>
+      <div class="header-sub">Marion County Services for the Developmentally Disabled · DMH TCM Compliant</div>
+    </div>
+  </div>
+  <div class="header-badge">🔒 Zero Footprint</div>
+</header>
+
+<!-- ── HIPAA Notice ── -->
+<div class="hipaa-bar">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+  </svg>
+  HIPAA NOTICE: This tool is zero-footprint. No PHI is transmitted, stored, or retained. All data exists only in your browser session and is cleared on close. AI narrative generation sends only anonymized clinical language to the Claude API — do not include full names, SSNs, or direct identifiers.
+</div>
+
+<!-- ── Review Info Bar ── -->
+<div class="info-grid">
+  <div class="info-field">
+    <label>Quarter Period</label>
+    <select id="quarter">
+      <option>Q1 — Jan–Mar</option>
+      <option>Q2 — Apr–Jun</option>
+      <option>Q3 — Jul–Sep</option>
+      <option selected>Q4 — Oct–Dec</option>
+    </select>
+  </div>
+  <div class="info-field">
+    <label>Review Year</label>
+    <input type="text" id="year" value="2026" placeholder="YYYY"/>
+  </div>
+  <div class="info-field">
+    <label>Review Date</label>
+    <input type="date" id="reviewDate"/>
+  </div>
+  <div class="info-field">
+    <label>Individual ID / Code</label>
+    <input type="text" id="indivId" placeholder="Case ID or initials only"/>
+  </div>
+  <div class="info-field">
+    <label>Support Coordinator</label>
+    <input type="text" id="coordinator" placeholder="Coordinator name"/>
+  </div>
+  <div class="info-field">
+    <label>Program / Service Type</label>
+    <select id="programType">
+      <option>Day Habilitation</option>
+      <option>Individualized Supported Living (ISL)</option>
+      <option>Community Support</option>
+      <option>Targeted Case Management (TCM)</option>
+      <option>Residential / Group Home</option>
+      <option>Comprehensive Waiver</option>
+      <option>Partnership for Hope</option>
+    </select>
+  </div>
+</div>
+
+<!-- ── Main Content ── -->
+<main class="main">
+
+  <!-- Section 1: Contact & Documents -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">1</div>
+      <div class="section-title">Contact Type & Documents Reviewed</div>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body" id="sec1">
+      <div class="field-row">
+        <label class="field-label">Contact Type This Quarter</label>
+        <div class="radio-group">
+          <label><input type="radio" name="contactType" value="face_to_face" checked/> Face-to-face (required at least once annually)</label>
+          <label><input type="radio" name="contactType" value="phone"/> Phone / Video</label>
+          <label><input type="radio" name="contactType" value="both"/> Both</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <label class="field-label">Face-to-Face Date (if applicable)</label>
+        <input type="date" id="f2fDate" style="max-width:220px;"/>
+      </div>
+      <div class="field-row">
+        <div class="divider-label">Documents Reviewed This Quarter</div>
+        <div class="checklist">
+          <label class="check-item"><input type="checkbox" id="doc_isp" checked/> Person-Centered Support Plan (PCSP)</label>
+          <label class="check-item"><input type="checkbox" id="doc_svc_logs" checked/> Service Delivery Logs</label>
+          <label class="check-item"><input type="checkbox" id="doc_provider_notes" checked/> Provider Progress Notes</label>
+          <label class="check-item"><input type="checkbox" id="doc_health"/> Health / Medical Records</label>
+          <label class="check-item"><input type="checkbox" id="doc_behavior"/> Behavior Support Documentation</label>
+          <label class="check-item"><input type="checkbox" id="doc_incident"/> Incident Reports</label>
+          <label class="check-item"><input type="checkbox" id="doc_finance"/> Personal Spending / Ledger</label>
+          <label class="check-item"><input type="checkbox" id="doc_agency_review"/> Agency Documentation Review</label>
+          <label class="check-item"><input type="checkbox" id="doc_rn"/> RN Oversight / Monthly Health Summary</label>
+          <label class="check-item"><input type="checkbox" id="doc_risk"/> Risk Screening</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <label class="field-label">Additional Documents Reviewed</label>
+        <input type="text" id="docsOther" placeholder="List any additional documentation..."/>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Service Monitoring -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">2</div>
+      <div class="section-title">Service Monitoring — PCSP Delivery Review</div>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body" id="sec2">
+      <p style="font-size:12px; color:var(--text3); margin-bottom:14px;">Per DMH TCM requirements: evaluate whether services are being furnished in accordance with the PCSP, whether services are adequate, and identify any needed adjustments.</p>
+      <div id="servicesContainer"></div>
+      <button class="add-btn" onclick="addService()">+ Add Service</button>
+    </div>
+  </div>
+
+  <!-- Section 3: PCSP Outcomes Progress -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">3</div>
+      <div class="section-title">PCSP Outcomes — Progress Review</div>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body" id="sec3">
+      <p style="font-size:12px; color:var(--text3); margin-bottom:14px;">Evaluate whether supports are helping the person attain outcomes or maintaining their current level.</p>
+      <div id="outcomesContainer"></div>
+      <button class="add-btn" onclick="addOutcome()">+ Add PCSP Outcome</button>
+    </div>
+  </div>
+
+  <!-- Section 4: Health & Safety -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">4</div>
+      <div class="section-title">Health, Safety & Rights Review</div>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body" id="sec4">
+      <div class="two-col field-row">
+        <div>
+          <label class="field-label">Health Events Since Last Review</label>
+          <div class="radio-group" style="margin-bottom:8px;">
+            <label><input type="radio" name="healthEvents" value="none" checked/> None</label>
+            <label><input type="radio" name="healthEvents" value="yes"/> Yes</label>
+          </div>
+        </div>
+        <div>
+          <label class="field-label">Safety Concerns Identified</label>
+          <div class="radio-group">
+            <label><input type="radio" name="safetyConcerns" value="none" checked/> None</label>
+            <label><input type="radio" name="safetyConcerns" value="yes"/> Yes</label>
+          </div>
+        </div>
+      </div>
+      <div class="field-row">
+        <label class="field-label">Health / Safety Notes</label>
+        <textarea id="healthNotes" placeholder="Describe any health events, medical appointments, medication changes, or safety concerns..."></textarea>
+      </div>
+      <div class="field-row">
+        <div class="divider-label">Rights & Dignity Observation</div>
+        <div class="radio-group" style="margin-bottom:8px;">
+          <label><input type="radio" name="rightsObs" value="upheld" checked/> Individual rights observed as upheld</label>
+          <label><input type="radio" name="rightsObs" value="concerns"/> Concerns identified</label>
+        </div>
+        <textarea id="rightsNotes" placeholder="Note any rights/dignity observations, including positive observations or areas needing attention..."></textarea>
+      </div>
+      <div class="field-row">
+        <div class="divider-label">Community Participation</div>
+        <div class="radio-group" style="margin-bottom:8px;">
+          <label><input type="radio" name="community" value="yes" checked/> Participating in community activities</label>
+          <label><input type="radio" name="community" value="limited"/> Limited / reduced this quarter</label>
+          <label><input type="radio" name="community" value="no"/> Not participating</label>
+        </div>
+        <textarea id="communityNotes" placeholder="Describe community integration activities this quarter..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Incidents & Crisis -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">5</div>
+      <div class="section-title">Incidents, Crisis Events & Reporting</div>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body" id="sec5">
+      <div class="field-row">
+        <label class="field-label">Reportable Incidents This Quarter</label>
+        <div class="radio-group" style="margin-bottom:10px;">
+          <label><input type="radio" name="incidents" value="none" checked/> No incidents to report</label>
+          <label><input type="radio" name="incidents" value="yes"/> Incident(s) occurred</label>
+        </div>
+      </div>
+      <div class="field-row">
+        <label class="field-label">Incident / Crisis Summary (if applicable)</label>
+        <textarea id="incidentNotes" placeholder="Summarize any incidents, crisis events, or ANE (Abuse/Neglect/Exploitation) reports. Include dates, nature of event, and actions taken. Do not include full identifying info."></textarea>
+      </div>
+      <div class="field-row">
+        <label class="field-label">CIMOR Event Reporting Status</label>
+        <select id="cimorStatus">
+          <option>Not applicable</option>
+          <option>Filed — no further action needed</option>
+          <option>Filed — follow-up in progress</option>
+          <option>Pending filing</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Narrative Generation -->
+  <div class="ai-section">
+    <h3>🤖 Nova — AI Narrative Generator</h3>
+    <p>Generates a DMH-compliant quarterly review narrative from your form data. Sends only clinical field values — no full names or direct identifiers.</p>
+    <div class="ai-controls">
+      <button class="ai-btn primary" onclick="generateNarrative('case_note')">Generate Case Note</button>
+      <button class="ai-btn" onclick="generateNarrative('summary_report')">Generate Summary Report</button>
+      <button class="ai-btn" onclick="clearOutput()">Clear</button>
+    </div>
+    <div id="aiOutput" class="output-box">
+      <button class="copy-btn" onclick="copyOutput()">Copy</button>
+      <div id="aiContent"></div>
+    </div>
+  </div>
+
+  <!-- Section 6: Conclusions & Recommendations -->
+  <div class="section-card">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-num">6</div>
+      <div class="section-title">Conclusions & Recommendations</div>
+      <span class="section-toggle">▾</span>
+    </div>
+    <div class="section-body" id="sec6">
+      <div class="field-row">
+        <label class="field-label">PCSP Plan Revision Required?</label>
+        <div class="radio-group" style="margin-bottom:8px;">
+          <label><input type="radio" name="planRevision" value="no" checked/> No revision needed at this time</label>
+          <label><input type="radio" name="planRevision" value="minor"/> Minor revision recommended</label>
+          <label><input type="radio" name="planRevision" value="full"/> Full plan review warranted</label>
+        </div>
+        <textarea id="revisionRationale" placeholder="If revision recommended, provide rationale..." style="min-height:56px;"></textarea>
+      </div>
+      <div class="field-row">
+        <label class="field-label">Overall Quarter Assessment</label>
+        <select id="quarterAssessment">
+          <option value="">Select...</option>
+          <option>Supports are effectively addressing identified outcomes</option>
+          <option>Supports are partially effective — adjustments recommended</option>
+          <option>Supports are not adequately addressing outcomes — intervention required</option>
+          <option>Insufficient data this quarter — additional monitoring needed</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="divider-label">Action Items / Follow-Up Required</div>
+        <div id="actionContainer"></div>
+        <button class="add-btn" onclick="addAction()" style="margin-top:6px;">+ Add Action Item</button>
+      </div>
+      <div class="two-col field-row" style="margin-top:14px;">
+        <div>
+          <label class="field-label">Next Scheduled Review Date</label>
+          <input type="date" id="nextReview"/>
+        </div>
+        <div>
+          <label class="field-label">Coordinator Signature / Initials</label>
+          <input type="text" id="sigInitials" placeholder="Initials for record"/>
+        </div>
+      </div>
+      <div class="field-row">
+        <label class="field-label">Additional Coordinator Notes</label>
+        <textarea id="coordNotes" placeholder="Any additional observations or notes not captured above..."></textarea>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── Footer Bar ── -->
+<div class="footer-bar">
+  <button class="btn" onclick="clearForm()">Clear Form</button>
+  <button class="btn accent-btn" onclick="window.print()">Print / Export PDF</button>
+</div>
+
+<script>
+// ── Helpers ──
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.section-toggle');
+  body.classList.toggle('collapsed');
+  toggle.textContent = body.classList.contains('collapsed') ? '▸' : '▾';
+}
+
+// ── Service Monitoring Repeater ──
+let svcCount = 0;
+function addService() {
+  svcCount++;
+  const c = document.getElementById('servicesContainer');
+  const div = document.createElement('div');
+  div.className = 'repeater-item';
+  div.id = 'svc_' + svcCount;
+  div.innerHTML = `
+    <div class="repeater-item-header">
+      <span class="item-badge">Service ${svcCount}</span>
+      <button class="remove-btn" onclick="this.closest('.repeater-item').remove()">Remove</button>
+    </div>
+    <div class="field-row">
+      <label class="field-label">Service Name / Type</label>
+      <input type="text" class="svc-name" placeholder="e.g. Day Habilitation, ISL, Community Support..."/>
+    </div>
+    <div class="two-col field-row">
+      <div>
+        <label class="field-label">Delivered Per PCSP?</label>
+        <select class="svc-delivered">
+          <option>Yes — in accordance with PCSP</option>
+          <option>Partially — see notes</option>
+          <option>No — not delivered as specified</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label">Service Adequate?</label>
+        <select class="svc-adequate">
+          <option>Yes — meeting identified needs</option>
+          <option>Partially — modifications recommended</option>
+          <option>No — significant gaps identified</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <label class="field-label">Provider / Agency</label>
+      <input type="text" class="svc-provider" placeholder="Provider or agency name"/>
+    </div>
+    <div class="field-row">
+      <label class="field-label">Monitoring Notes</label>
+      <textarea class="svc-notes" placeholder="Document observations, contact with provider, service delivery status, any issues noted..."></textarea>
+    </div>`;
+  c.appendChild(div);
+}
+
+// ── PCSP Outcomes Repeater ──
+let outcomeCount = 0;
+function addOutcome() {
+  outcomeCount++;
+  const c = document.getElementById('outcomesContainer');
+  const div = document.createElement('div');
+  div.className = 'repeater-item';
+  div.id = 'out_' + outcomeCount;
+  div.innerHTML = `
+    <div class="repeater-item-header">
+      <span class="item-badge">Outcome ${outcomeCount}</span>
+      <button class="remove-btn" onclick="this.closest('.repeater-item').remove()">Remove</button>
+    </div>
+    <div class="field-row">
+      <label class="field-label">Outcome / Goal Description</label>
+      <input type="text" class="out-name" placeholder="State the PCSP outcome or goal area..."/>
+    </div>
+    <div class="two-col field-row">
+      <div>
+        <label class="field-label">Progress Status</label>
+        <select class="out-status">
+          <option>Making progress toward outcome</option>
+          <option>Maintaining current level</option>
+          <option>Outcome achieved — new goal needed</option>
+          <option>Regression noted</option>
+          <option>Insufficient data this quarter</option>
+          <option>Outcome not yet initiated</option>
+        </select>
+      </div>
+      <div>
+        <label class="field-label">Priority Level</label>
+        <select class="out-priority">
+          <option>High</option>
+          <option selected>Standard</option>
+          <option>Monitoring only</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <label class="field-label">Progress Notes / Evidence</label>
+      <textarea class="out-notes" placeholder="Describe observable progress, data reviewed, staff/provider input, barriers encountered..."></textarea>
+    </div>`;
+  c.appendChild(div);
+}
+
+// ── Action Items ──
+let actionCount = 0;
+function addAction() {
+  actionCount++;
+  const c = document.getElementById('actionContainer');
+  const div = document.createElement('div');
+  div.className = 'action-item';
+  div.innerHTML = `
+    <input type="text" class="action-text" placeholder="Action item — who is responsible and by when..."/>
+    <button class="remove-btn" onclick="this.closest('.action-item').remove()" style="padding:8px 10px; border:1px solid #ffd5d5; border-radius:6px;">✕</button>`;
+  c.appendChild(div);
+}
+
+// ── Collect form data for AI ──
+function collectFormData() {
+  const quarter = document.getElementById('quarter').value;
+  const year = document.getElementById('year').value;
+  const coordinator = document.getElementById('coordinator').value || 'Support Coordinator';
+  const programType = document.getElementById('programType').value;
+  const contactType = document.querySelector('input[name="contactType"]:checked')?.value || 'face_to_face';
+  const healthEvents = document.querySelector('input[name="healthEvents"]:checked')?.value || 'none';
+  const safetyConcerns = document.querySelector('input[name="safetyConcerns"]:checked')?.value || 'none';
+  const rightsObs = document.querySelector('input[name="rightsObs"]:checked')?.value || 'upheld';
+  const community = document.querySelector('input[name="community"]:checked')?.value || 'yes';
+  const incidents = document.querySelector('input[name="incidents"]:checked')?.value || 'none';
+  const planRevision = document.querySelector('input[name="planRevision"]:checked')?.value || 'no';
+  const quarterAssessment = document.getElementById('quarterAssessment').value;
+
+  const docsChecked = [];
+  document.querySelectorAll('.checklist input[type="checkbox"]:checked').forEach(cb => {
+    docsChecked.push(cb.nextSibling?.textContent?.trim() || cb.id);
+  });
+  const docsOther = document.getElementById('docsOther').value;
+
+  const services = [];
+  document.querySelectorAll('#servicesContainer .repeater-item').forEach(item => {
+    services.push({
+      name: item.querySelector('.svc-name')?.value || '',
+      delivered: item.querySelector('.svc-delivered')?.value || '',
+      adequate: item.querySelector('.svc-adequate')?.value || '',
+      provider: item.querySelector('.svc-provider')?.value || '',
+      notes: item.querySelector('.svc-notes')?.value || ''
+    });
+  });
+
+  const outcomes = [];
+  document.querySelectorAll('#outcomesContainer .repeater-item').forEach(item => {
+    outcomes.push({
+      name: item.querySelector('.out-name')?.value || '',
+      status: item.querySelector('.out-status')?.value || '',
+      priority: item.querySelector('.out-priority')?.value || '',
+      notes: item.querySelector('.out-notes')?.value || ''
+    });
+  });
+
+  const actions = [];
+  document.querySelectorAll('.action-text').forEach(el => {
+    if (el.value.trim()) actions.push(el.value.trim());
+  });
+
+  return {
+    quarter, year, coordinator, programType, contactType,
+    healthEvents, safetyConcerns, rightsObs, community, incidents,
+    planRevision, quarterAssessment,
+    docsReviewed: docsChecked.concat(docsOther ? [docsOther] : []),
+    healthNotes: document.getElementById('healthNotes').value,
+    rightsNotes: document.getElementById('rightsNotes').value,
+    communityNotes: document.getElementById('communityNotes').value,
+    incidentNotes: document.getElementById('incidentNotes').value,
+    revisionRationale: document.getElementById('revisionRationale').value,
+    coordNotes: document.getElementById('coordNotes').value,
+    services, outcomes, actions,
+    nextReview: document.getElementById('nextReview').value,
+    sigInitials: document.getElementById('sigInitials').value
+  };
+}
+
+// ── AI Narrative Generation ──
+async function generateNarrative(type) {
+  const data = collectFormData();
+  const outputDiv = document.getElementById('aiOutput');
+  const contentDiv = document.getElementById('aiContent');
+  outputDiv.classList.add('visible');
+
+  const isNote = type === 'case_note';
+
+  contentDiv.innerHTML = `<div class="output-loading"><div class="spinner"></div>${isNote ? 'Generating case note...' : 'Generating summary report...'}</div>`;
+
+  const servicesText = data.services.length
+    ? data.services.map(s => `Service: ${s.name} (${s.provider})\n  - Delivered per PCSP: ${s.delivered}\n  - Adequate: ${s.adequate}\n  - Notes: ${s.notes}`).join('\n\n')
+    : 'No services entered.';
+
+  const outcomesText = data.outcomes.length
+    ? data.outcomes.map(o => `Outcome: ${o.name}\n  - Status: ${o.status}\n  - Priority: ${o.priority}\n  - Notes: ${o.notes}`).join('\n\n')
+    : 'No outcomes entered.';
+
+  const actionsText = data.actions.length ? data.actions.map((a,i) => `${i+1}. ${a}`).join('\n') : 'None specified.';
+
+  const systemPrompt = isNote
+    ? `You are a licensed support coordinator writing a Quarterly Review case note for a Missouri DMH Division of Developmental Disabilities TCM (Targeted Case Management) file. Write in the professional third-person past tense typically used for case documentation. The note MUST begin with "Quarterly Review" as required by the DMH TCM Technical Assistance Manual. Structure: (1) documents reviewed, (2) service delivery status per PCSP, (3) progress on outcomes, (4) health/safety/rights, (5) incidents if any, (6) conclusions and recommendations. Be concise and specific. Do not invent details not provided. Use clinical language appropriate for an official record. Do not include full names — use "the individual" or initials if provided.`
+    : `You are a licensed support coordinator writing a formal Quarterly Summary Report for a Missouri DMH Division of Developmental Disabilities individual file. Write in professional third-person. Organize with clear section headers: Documents Reviewed, Service Monitoring, PCSP Outcomes Progress, Health & Safety Review, Incident Summary, Conclusions & Recommendations. This report should be kept with the individual record per DMH TCM guidelines. Be thorough but not repetitive of the underlying logs. Use clinical language. Do not include full names — use "the individual."`;
+
+  const userPrompt = `Generate a ${isNote ? 'case note beginning with "Quarterly Review"' : 'formal Quarterly Summary Report'} for the following quarterly review data:
+
+REVIEW PERIOD: ${data.quarter} ${data.year}
+PROGRAM TYPE: ${data.programType}
+CONTACT TYPE: ${data.contactType === 'face_to_face' ? 'Face-to-face' : data.contactType === 'phone' ? 'Phone/Video' : 'Both face-to-face and phone'}
+COORDINATOR: ${data.coordinator || 'Support Coordinator'}
+
+DOCUMENTS REVIEWED:
+${data.docsReviewed.join(', ') || 'None specified'}
+
+SERVICE MONITORING:
+${servicesText}
+
+PCSP OUTCOMES PROGRESS:
+${outcomesText}
+
+HEALTH STATUS: ${data.healthEvents === 'none' ? 'No health events reported' : 'Health events noted'}
+HEALTH NOTES: ${data.healthNotes || 'None'}
+SAFETY CONCERNS: ${data.safetyConcerns === 'none' ? 'None identified' : 'Concerns identified'}
+RIGHTS OBSERVATION: ${data.rightsObs === 'upheld' ? 'Rights observed as upheld' : 'Concerns identified'}
+RIGHTS NOTES: ${data.rightsNotes || 'None'}
+COMMUNITY PARTICIPATION: ${data.community === 'yes' ? 'Actively participating' : data.community === 'limited' ? 'Limited this quarter' : 'Not participating'}
+COMMUNITY NOTES: ${data.communityNotes || 'None'}
+
+INCIDENTS: ${data.incidents === 'none' ? 'No reportable incidents' : 'Incident(s) occurred'}
+INCIDENT NOTES: ${data.incidentNotes || 'None'}
+
+PLAN REVISION: ${data.planRevision === 'no' ? 'No revision needed' : data.planRevision === 'minor' ? 'Minor revision recommended' : 'Full review warranted'}
+REVISION RATIONALE: ${data.revisionRationale || 'N/A'}
+
+OVERALL ASSESSMENT: ${data.quarterAssessment || 'Not specified'}
+
+ACTION ITEMS:
+${actionsText}
+
+ADDITIONAL NOTES: ${data.coordNotes || 'None'}
+NEXT REVIEW: ${data.nextReview || 'Not specified'}`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    });
+    if (!resp.ok) throw new Error(`API error: ${resp.status}`);
+    const json = await resp.json();
+    const text = json.content?.[0]?.text || 'No response received.';
+    contentDiv.textContent = text;
+  } catch (err) {
+    contentDiv.innerHTML = `<span style="color:var(--danger);">Error: ${err.message}. Check API connection and try again.</span>`;
+  }
+}
+
+function clearOutput() {
+  const outputDiv = document.getElementById('aiOutput');
+  document.getElementById('aiContent').innerHTML = '';
+  outputDiv.classList.remove('visible');
+}
+
+function copyOutput() {
+  const text = document.getElementById('aiContent').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = orig; }, 1500);
+  });
+}
+
+function clearForm() {
+  if (!confirm('Clear all form data? This cannot be undone.')) return;
+  document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(el => el.value = '');
+  document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+  document.querySelectorAll('input[type="radio"]').forEach(el => el.checked = false);
+  document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+  document.getElementById('servicesContainer').innerHTML = '';
+  document.getElementById('outcomesContainer').innerHTML = '';
+  document.getElementById('actionContainer').innerHTML = '';
+  clearOutput();
+  svcCount = 0; outcomeCount = 0; actionCount = 0;
+  // Reset defaults
+  document.querySelector('input[name="contactType"][value="face_to_face"]').checked = true;
+  document.querySelector('input[name="healthEvents"][value="none"]').checked = true;
+  document.querySelector('input[name="safetyConcerns"][value="none"]').checked = true;
+  document.querySelector('input[name="rightsObs"][value="upheld"]').checked = true;
+  document.querySelector('input[name="community"][value="yes"]').checked = true;
+  document.querySelector('input[name="incidents"][value="none"]').checked = true;
+  document.querySelector('input[name="planRevision"][value="no"]').checked = true;
+  ['doc_isp','doc_svc_logs','doc_provider_notes'].forEach(id => { document.getElementById(id).checked = true; });
+  document.getElementById('year').value = new Date().getFullYear();
+}
+
+// ── Init defaults ──
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('reviewDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('year').value = new Date().getFullYear();
+  addService();
+  addOutcome();
+  addAction();
+});
+</script>
+</body>
+</html>
